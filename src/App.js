@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import './App.css'
-import pollService from './services/polls'
+import React, { useState, useEffect } from "react"
+import "./App.css"
+import pollService from "./services/polls"
+import Poll from "./components/Poll"
+import Home from "./components/Home"
 
-function App() {
-  const [polls, setPolls] = useState([]) 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom"
+
+const App = () => {
+  const [polls, setPolls] = useState([])
 
   useEffect(() => {
     pollService
@@ -13,11 +21,19 @@ function App() {
         setPolls(initialPolls)
       })
   }, [])
+
   return (
     <div className="App">
-      {polls.map(poll => 
-        <p>{poll.question}</p>
-      )}
+      <Router>
+        <Switch>
+          <Route path="/polls/:id">
+            <Poll polls={polls} pollService={pollService} />
+          </Route>
+          <Route path="/">
+            <Home polls={polls} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 }

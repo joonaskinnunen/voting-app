@@ -3,6 +3,8 @@ import "./App.css"
 import pollService from "./services/polls"
 import Poll from "./components/Poll"
 import Home from "./components/Home"
+import Header from "./components/Header"
+import { Container } from "react-bootstrap"
 
 import {
   BrowserRouter as Router,
@@ -24,16 +26,19 @@ const App = () => {
 
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/polls/:id">
-            <Poll polls={polls} pollService={pollService} />
-          </Route>
-          <Route path="/">
-            <Home polls={polls} />
-          </Route>
-        </Switch>
-      </Router>
+      <Container fluid>
+        <Header />
+        <Router>
+          <Switch>
+            <Route path="/polls/:id">
+              <Poll polls={polls} pollService={pollService} />
+            </Route>
+            <Route path="/">
+              <Home polls={polls} />
+            </Route>
+          </Switch>
+        </Router>
+      </Container>
     </div>
   )
 }

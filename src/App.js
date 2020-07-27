@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import './App.css'
+import pollService from './services/polls'
 
 function App() {
+  const [polls, setPolls] = useState([]) 
+
+  useEffect(() => {
+    pollService
+      .getAll()
+      .then(initialPolls => {
+        console.log(initialPolls)
+        setPolls(initialPolls)
+      })
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {polls.map(poll => 
+        <p>{poll.question}</p>
+      )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

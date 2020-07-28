@@ -5,11 +5,11 @@ import { useParams } from "react-router-dom"
 import Chart from "react-google-charts"
 import { Button, Form, Row, Alert } from "react-bootstrap"
 
-const Poll = ({ polls, pollService }) => {
+const Poll = ({ polls, pollService, setPolls }) => {
   const [formSelect, setFormSelect] = useState(1)
   const [alertMessage, setAlertMessage] = useState("")
   const [alertVariant, setAlertVariant] = useState("success")
-  const id = useParams().id
+  const id = Number(useParams().id)
   const poll = polls.find(n => n.id === Number(id))
   const options = Object.entries(poll.options)
   const optionsAndVotes = options.map(x => [x[1].option])
@@ -22,11 +22,9 @@ const Poll = ({ polls, pollService }) => {
 
   const vote = (event) => {
     event.preventDefault()
-    console.log(formSelect)
     const newObj = { ...poll, options: { ...poll.options, [formSelect]: { ...poll.options[formSelect], votes: poll.options[formSelect].votes + 1 } } }
-    console.log(newObj)
     pollService.update(id, newObj).then(response => {
-      console.log(response)
+      setPolls(polls.map(poll => poll.id !== id ? poll : response))
       setAlertVariant("success")
       setAlertMessage("Thanks for voting!")
     })
@@ -55,7 +53,6 @@ const Poll = ({ polls, pollService }) => {
           }}
           rootProps={{ "data-testid": "1" }}
         />
-
         <Form inline onSubmit={vote}>
           <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
         I'd like to vote for...:

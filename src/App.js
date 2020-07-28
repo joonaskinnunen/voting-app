@@ -11,6 +11,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom"
+import NewPoll from "./components/NewPoll"
 
 const App = () => {
   const [polls, setPolls] = useState([])
@@ -30,8 +31,11 @@ const App = () => {
         <Header />
         <Router>
           <Switch>
+            <Route path="/newpoll">
+              <NewPoll polls={polls} setPolls={setPolls} pollService={pollService} />
+            </Route>
             <Route path="/polls/:id">
-              <Poll polls={polls} pollService={pollService} />
+              <Poll polls={polls} setPolls={setPolls} pollService={pollService} />
             </Route>
             <Route path="/">
               <Home polls={polls} />

@@ -5,3 +5,13 @@
 .header {
   margin-bottom: 40px;
 }
+
+.nav-link {
+  color: rgb(0 0 0 / 81%) !important;
+}
+
+.container-fluid {
+  padding-left: 30px;
+  padding-right: 30px;
+  text-align: center;
+}

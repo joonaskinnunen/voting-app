@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
-import { Button, Form, Row, Alert } from "react-bootstrap"
+import { Button, Form, Row } from "react-bootstrap"
 
-const NewPoll = ({ polls, pollService, setPolls }) => {
-  const [alertMessage, setAlertMessage] = useState("")
-  const [alertVariant, setAlertVariant] = useState("success")
-  const [values, setValues] = useState({ question: "", options: "" })
+const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
+  const [values, setValues] = useState({ question: "", options: "", optionsObj: {} })
 
   const formStyle = {
     marginBottom: "20px"
@@ -16,16 +14,16 @@ const NewPoll = ({ polls, pollService, setPolls }) => {
     const newObj = { question: values.question, options: values.optionsObj }
     pollService.create(newObj).then(response => {
       setPolls(polls.concat(response.data))
-      setAlertVariant("success")
-      setAlertMessage("A new poll added succesfully!")
-      setValues({ question: "", options: "" })
+      setMessagevariant("success")
+      setMessage("A new poll added succesfully!")
+      setValues({ question: "", options: "", optionsObj: {} })
     }).catch(error => {
       console.log(error)
-      setAlertVariant("danger")
-      setAlertMessage("Error. Try again later.")
+      setMessagevariant("danger")
+      setMessage("Error. Try again later.")
     })
     setTimeout(() => {
-      setAlertMessage("")
+      setMessage("")
     }, 3000)
   }
 
@@ -58,7 +56,6 @@ const NewPoll = ({ polls, pollService, setPolls }) => {
           </Button>
         </Form>
       </Row>
-      {alertMessage.length > 0 && <Alert variant={alertVariant}>{alertMessage}</Alert>}
     </>
   )
 }

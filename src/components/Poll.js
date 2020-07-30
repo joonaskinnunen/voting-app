@@ -3,14 +3,22 @@
 import React, { useState } from "react"
 import { useParams } from "react-router-dom"
 import Chart from "react-google-charts"
-import { Button, Form, Row, Alert } from "react-bootstrap"
+import { Button, Form, Row } from "react-bootstrap"
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  WhatsappIcon
+} from "react-share"
 
-const Poll = ({ polls, pollService, setPolls }) => {
-  const [formSelect, setFormSelect] = useState(1)
-  const [alertMessage, setAlertMessage] = useState("")
-  const [alertVariant, setAlertVariant] = useState("success")
-  const id = Number(useParams().id)
-  const poll = polls.find(n => n.id === Number(id))
+const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
+  const [formSelect, setFormSelect] = useState(0)
+  const id = useParams().id
+  console.log(polls)
+  const poll = polls.find(n => n.id === id)
+  console.log(poll)
   const options = Object.entries(poll.options)
   const optionsAndVotes = options.map(x => [x[1].option])
   options.map((x, i) => optionsAndVotes[i].push(x[1].votes))
@@ -18,6 +26,7 @@ const Poll = ({ polls, pollService, setPolls }) => {
 
   const onFormChange = (event) => {
     setFormSelect(event.target.value)
+    console.log(poll)
   }
 
   const vote = (event) => {
@@ -25,31 +34,32 @@ const Poll = ({ polls, pollService, setPolls }) => {
     const newObj = { ...poll, options: { ...poll.options, [formSelect]: { ...poll.options[formSelect], votes: poll.options[formSelect].votes + 1 } } }
     pollService.update(id, newObj).then(response => {
       setPolls(polls.map(poll => poll.id !== id ? poll : response))
-      setAlertVariant("success")
-      setAlertMessage("Thanks for voting!")
+      setMessagevariant("success")
+      setMessage("Thanks for voting!")
     })
       .catch(error => {
         console.log(error)
-        setAlertVariant("danger")
-        setAlertMessage("Error. Try again later.")
+        setMessagevariant("danger")
+        setMessage("Error. Try again later.")
       })
     setTimeout(() => {
-      setAlertMessage("")
+      setMessage("")
     }, 3000)
   }
 
   return (
     <>
       <h3>{poll.question}</h3>
-      <Row className="justify-content-md-center">
+      <Row className="justify-content-center">
         <Chart
-          width={"500px"}
+          width={"300px"}
           height={"300px"}
           chartType="PieChart"
           loader={<div>Loading Chart</div>}
           data={optionsAndVotes}
           options={{
             title: "Votes",
+            is3D: true
           }}
           rootProps={{ "data-testid": "1" }}
         />
@@ -71,7 +81,10 @@ const Poll = ({ polls, pollService, setPolls }) => {
           </Button>
         </Form>
       </Row>
-      {alertMessage.length > 0 && <Alert variant={alertVariant}>{alertMessage}</Alert>}
+      <p style={{ marginTop: "30px" }}>Share this poll:</p>
+      <FacebookShareButton url={window.location.href}><FacebookIcon size={40} round={true} /></FacebookShareButton>
+      <TwitterShareButton url={window.location.href}><TwitterIcon size={40} round={true} /></TwitterShareButton>
+      <WhatsappShareButton url={window.location.href}><WhatsappIcon size={40} round={true} /></WhatsappShareButton>
     </>
   )
 }

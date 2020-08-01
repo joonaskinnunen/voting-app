@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import Chart from "react-google-charts"
 import { Button, Form, Row } from "react-bootstrap"
@@ -16,6 +16,15 @@ import {
 const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant, user }) => {
   const [formSelect, setFormSelect] = useState(0)
   const [newOption, setNewOption] = useState("")
+
+  useEffect(() => {
+    pollService
+      .getAll()
+      .then(initialPolls => {
+        setPolls(initialPolls)
+      })
+  }, [])
+
   const id = useParams().id
   const poll = polls.find(n => n.id === id)
   const options = Object.entries(poll.options)

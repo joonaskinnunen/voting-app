@@ -12,7 +12,7 @@ import Signup from "./components/Signup"
 import { Container } from "react-bootstrap"
 
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Redirect,
@@ -31,7 +31,6 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedVoteappUser")
-    console.log(loggedUserJSON)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -44,7 +43,6 @@ const App = () => {
     pollService
       .getAll()
       .then(initialPolls => {
-        console.log(initialPolls)
         setPolls(initialPolls)
       })
   }, [])
@@ -62,8 +60,8 @@ const App = () => {
   return (
     <div>
       <Container fluid>
-        <Header user={ user } logout={ handleLogout } />
         <Router>
+          <Header user={ user } logout={ handleLogout } />
           <Switch>
             <Route path="/polls/:id">
               <Poll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant} user={user}/>

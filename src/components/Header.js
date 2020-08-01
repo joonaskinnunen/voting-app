@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react"
 import { Navbar, Nav, NavDropdown } from "react-bootstrap"
+import { LinkContainer } from "react-router-bootstrap"
 import Logo from "../vote.png"
 
 const Header = ({ user, logout }) => {
@@ -20,14 +21,15 @@ const Header = ({ user, logout }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            {user !== null && <Nav.Link href="/newpoll">Create new poll</Nav.Link>}
-            {user === null && <Nav.Link href="/login">Sign up / login</Nav.Link>}
+            {user !== null && <LinkContainer to="/newpoll"><Nav.Link>Create new poll</Nav.Link></LinkContainer>}
+            {user === null && <LinkContainer to="/login"><Nav.Link>Sign up / login</Nav.Link></LinkContainer>}
           </Nav>
           <Nav>
             {user !== null && <NavDropdown title={user.name} id="collasible-nav-dropdown">
-              <NavDropdown.Item href="/mypolls">My polls</NavDropdown.Item>
+              <LinkContainer to="/mypolls"><NavDropdown.Item>My polls</NavDropdown.Item></LinkContainer>
               <NavDropdown.Item onClick={ logout }>Log out</NavDropdown.Item>
             </NavDropdown>}
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>

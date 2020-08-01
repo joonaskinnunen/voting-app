@@ -4,7 +4,6 @@ import { Link } from "react-router-dom"
 import { ListGroup } from "react-bootstrap"
 
 const Home = ({ polls, user }) => {
-  console.log(polls)
   const [searchString, setSearchString] = useState("")
   const [pollsToShow, setPollsToShow] = useState(polls)
 

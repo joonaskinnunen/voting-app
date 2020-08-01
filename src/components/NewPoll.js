@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Button, Form, Row } from "react-bootstrap"
 
 const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
-  const [values, setValues] = useState({ question: "", options: "", optionsObj: {} })
+  const [values, setValues] = useState({ question: "", options: "", optionsObj: {}, allowCustomOption: false, privatePoll: false })
 
   const formStyle = {
     marginBottom: "20px"
@@ -11,6 +11,7 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log(values)
     if(values.question.length < 5) {
       setMessagevariant("danger")
       setMessage("Question length must be at least 5 characters long")
@@ -18,12 +19,12 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
       setMessagevariant("danger")
       setMessage("Give at least two options")
     } else {
-      const newObj = { question: values.question, options: values.optionsObj }
+      const newObj = { question: values.question, options: values.optionsObj, allowCustomOption: values.allowCustomOption, privatePoll: values.privatePoll }
       pollService.create(newObj).then(response => {
         setPolls(polls.concat(response.data))
         setMessagevariant("success")
         setMessage("A new poll added succesfully!")
-        setValues({ question: "", options: "", optionsObj: {} })
+        setValues({ question: "", options: "", optionsObj: {}, allowCustomOption: false, privatePoll: false })
       }).catch(error => {
         console.log(error)
         setMessagevariant("danger")
@@ -58,6 +59,14 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
           <Form.Group>
             <Form.Label><b>Options (seperated by line):</b></Form.Label>
             <Form.Control required as="textarea" rows="3" value={values.options} onChange={({ target }) => handleOptionsChange(target.value)} />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Allow users to add their own custom options:</Form.Label>
+            <Form.Check onChange={() => setValues({ ...values, allowCustomOption: !values.allowCustomOption })} aria-label="Allow custom options" />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Make this poll private. Only people with the direct link has access:</Form.Label>
+            <Form.Check onChange={() => setValues({ ...values, privatePoll: !values.privatePoll })} aria-label="Make this poll private" />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit

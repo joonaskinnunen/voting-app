@@ -13,8 +13,9 @@ import {
   WhatsappIcon
 } from "react-share"
 
-const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
+const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant, user }) => {
   const [formSelect, setFormSelect] = useState(0)
+  const [newOption, setNewOption] = useState("")
   const id = useParams().id
   const poll = polls.find(n => n.id === id)
   const options = Object.entries(poll.options)
@@ -28,7 +29,10 @@ const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) =
 
   const vote = (event) => {
     event.preventDefault()
-    const newObj = { ...poll, options: { ...poll.options, [formSelect]: { ...poll.options[formSelect], votes: poll.options[formSelect].votes + 1 } } }
+    let newObj = { ...poll, options: { ...poll.options, [Object.keys(poll.options).length] : { option: newOption, votes: 1 } } }
+    if(formSelect !== "newOption") {
+      newObj = { ...poll, options: { ...poll.options, [formSelect]: { ...poll.options[formSelect], votes: poll.options[formSelect].votes + 1 } } }
+    }
     pollService.update(id, newObj).then(response => {
       setPolls(polls.map(poll => poll.id !== id ? poll : response))
       setMessagevariant("success")
@@ -82,7 +86,9 @@ const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) =
             custom
           >
             {options.map(option => <option value={option[0]} key={option[0]}>{option[1].option}</option>)}
+            {(user && poll.allowCustomOption) && <option value="newOption" key={9999}>I'd like a custom option</option>}
           </Form.Control>
+          {formSelect === "newOption" && <Form.Control required placeholder="Input your own option" value={newOption} onChange={({ target }) => setNewOption(target.value)} />}
           <Button type="submit" className="my-1">
         Vote
           </Button>

@@ -66,7 +66,7 @@ const App = () => {
         <Router>
           <Switch>
             <Route path="/polls/:id">
-              <Poll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant}/>
+              <Poll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant} user={user}/>
             </Route>
             <Route path="/login">
               {user !== null ? <Redirect to="/mypolls" /> : <Login loginService={loginService} user={user} setUser={setUser} username={username} setUsername={setUsername} password={password} setPassword={setPassword} setMessage={setMessage} setMessagevariant={setMessageVariant} />}

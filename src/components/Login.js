@@ -2,6 +2,7 @@
 import React from "react"
 import { Button, Form, Row } from "react-bootstrap"
 import pollService from "../services/polls"
+import { Link } from "react-router-dom"
 
 const Login = ( { loginService, setUsername, username, setPassword, password, setUser, setMessage, setMessagevariant } ) => {
   const handleLogin = async (event) => {
@@ -37,6 +38,7 @@ const Login = ( { loginService, setUsername, username, setPassword, password, se
   return (
     <>
       <h3>Login</h3>
+      <p>Log in if you have an account</p>
       <Row className="justify-content-center">
         <Form onSubmit={handleLogin}>
           <Form.Group>
@@ -52,6 +54,13 @@ const Login = ( { loginService, setUsername, username, setPassword, password, se
           </Button>
         </Form>
       </Row>
+      <hr />
+      <h3 style={{ marginTop: "50px" }}>Sign up</h3>
+      <p>Or sign up if you dont have an account already</p>
+      <Link to="/signup"><Button variant="primary" size="lg">
+      Sign up
+      </Button>
+      </Link>
     </>  )
 }
 

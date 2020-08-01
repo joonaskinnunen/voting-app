@@ -1,17 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap');
+
 .App {
   text-align: center;
+}
+
+a {
+  color: #4cdbc4!important
+}
+
+p {
+  margin-top: revert !important;
 }
 
 .header {
   margin-bottom: 40px;
 }
 
-.nav-link {
-  color: rgb(0 0 0 / 81%) !important;
+.nav-link, .navbar-brand {
+  color: #ffff !important;
 }
 
 .container-fluid {
   padding-left: 30px;
   padding-right: 30px;
   text-align: center;
+}
+
+h1, h2, h3 {
+  font-family: "Bowlby One SC", cursive;
+}
+
+.btn-primary {
+  background-color: #4cdbc4;
+  border-color: #4cdbc4;
+}
+
+.form-group {
+  width: 300px;
 }

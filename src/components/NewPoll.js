@@ -11,17 +11,25 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const newObj = { question: values.question, options: values.optionsObj }
-    pollService.create(newObj).then(response => {
-      setPolls(polls.concat(response.data))
-      setMessagevariant("success")
-      setMessage("A new poll added succesfully!")
-      setValues({ question: "", options: "", optionsObj: {} })
-    }).catch(error => {
-      console.log(error)
+    if(values.question.length < 5) {
       setMessagevariant("danger")
-      setMessage("Error. Try again later.")
-    })
+      setMessage("Question length must be at least 5 characters long")
+    } else if(!values.optionsObj[1]) {
+      setMessagevariant("danger")
+      setMessage("Give at least two options")
+    } else {
+      const newObj = { question: values.question, options: values.optionsObj }
+      pollService.create(newObj).then(response => {
+        setPolls(polls.concat(response.data))
+        setMessagevariant("success")
+        setMessage("A new poll added succesfully!")
+        setValues({ question: "", options: "", optionsObj: {} })
+      }).catch(error => {
+        console.log(error)
+        setMessagevariant("danger")
+        setMessage("Error. Try again later.")
+      })
+    }
     setTimeout(() => {
       setMessage("")
     }, 3000)
@@ -41,14 +49,14 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
   return (
     <>
       <h3>Add a new poll</h3>
-      <Row className="justify-content-lg-center">
+      <Row className="justify-content-center">
         <Form onSubmit={handleSubmit} style={formStyle}>
           <Form.Group>
-            <Form.Label>Question</Form.Label>
+            <Form.Label><b>Question:</b></Form.Label>
             <Form.Control placeholder="Input poll question" required value={values.question} onChange={({ target }) => handleQuestionChange(target.value)} />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Options (seperated by line):</Form.Label>
+            <Form.Label><b>Options (seperated by line):</b></Form.Label>
             <Form.Control required as="textarea" rows="3" value={values.options} onChange={({ target }) => handleOptionsChange(target.value)} />
           </Form.Group>
           <Button variant="primary" type="submit">

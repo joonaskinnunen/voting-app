@@ -49,7 +49,7 @@ const Signup = ( { signupService, setMessage, setMessagevariant } ) => {
   return (
     <>
       {isSignedup && <Redirect to="/login" />}
-      <h3>Sign-in</h3>
+      <h3>Sign up</h3>
       <Row className="justify-content-center">
         <Form onSubmit={handleSignup}>
           <Form.Group>

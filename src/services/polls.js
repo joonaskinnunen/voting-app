@@ -4,12 +4,10 @@ const baseUrl = "http://localhost:3001/api/polls"
 let token = null
 
 const setToken = newToken => {
-  console.log("SetToken kutsuttu")
   token = `bearer ${newToken}`
 }
 
 const getAll = () => {
-  console.log(token)
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
@@ -28,4 +26,13 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, update, setToken }
+const remove = async id => {
+  console.log(id)
+  const config = {
+    headers: { Authorization: token },
+  }
+  const response = await axios.delete(baseUrl + "/" + id, config)
+  return response.data
+}
+
+export default { getAll, create, update, remove, setToken }

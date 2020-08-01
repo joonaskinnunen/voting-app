@@ -15,9 +15,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  Link
 } from "react-router-dom"
 import MessageAlert from "./components/MessageAlert"
+import MyPolls from "./components/MyPolls"
 
 const App = () => {
   const [polls, setPolls] = useState([])
@@ -34,6 +36,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       pollService.setToken(user.token)
+      console.log(user)
     }
   }, [])
 
@@ -41,6 +44,7 @@ const App = () => {
     pollService
       .getAll()
       .then(initialPolls => {
+        console.log(initialPolls)
         setPolls(initialPolls)
       })
   }, [])
@@ -48,6 +52,11 @@ const App = () => {
   const handleLogout = () => {
     loginService.logout()
     setUser(null)
+    setMessageVariant("success")
+    setMessage("Logged out successfully")
+    setTimeout(() => {
+      setMessage("")
+    }, 3000)
   }
 
   return (
@@ -56,24 +65,27 @@ const App = () => {
         <Header user={ user } logout={ handleLogout } />
         <Router>
           <Switch>
-            <Route path="/newpoll">
-              {user !== null ? <NewPoll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant} /> : <Redirect to="/" />}
-            </Route>
             <Route path="/polls/:id">
               <Poll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant}/>
             </Route>
             <Route path="/login">
-              {user !== null ? <Redirect to="/" /> : <Login loginService={loginService} user={user} setUser={setUser} username={username} setUsername={setUsername} password={password} setPassword={setPassword} setMessage={setMessage} setMessagevariant={setMessageVariant} />}
+              {user !== null ? <Redirect to="/mypolls" /> : <Login loginService={loginService} user={user} setUser={setUser} username={username} setUsername={setUsername} password={password} setPassword={setPassword} setMessage={setMessage} setMessagevariant={setMessageVariant} />}
             </Route>
             <Route path="/signup">
-              {user !== null ? <Redirect to="/" /> : <Signup signupService={signupService} setMessage={setMessage} setMessagevariant={setMessageVariant} />}
+              {user !== null ? <Redirect to="/mypolls" /> : <Signup signupService={signupService} setMessage={setMessage} setMessagevariant={setMessageVariant} />}
+            </Route>
+            <Route path="/newpoll">
+              {user !== null ? <NewPoll polls={polls} setPolls={setPolls} pollService={pollService} setMessage={setMessage} setMessagevariant={setMessageVariant} /> : <p>You have to <Link to="/login">login</Link> to create a new poll</p> }
+            </Route>
+            <Route path="/mypolls">
+              {user !== null ? <MyPolls polls={polls} user={user} pollService={pollService} setPolls={setPolls} setMessage={setMessage} setMessagevariant={setMessageVariant} /> : <p><Link to="/login">Login</Link> to see your polls.</p> }
             </Route>
             <Route path="/">
-              <Home polls={polls} />
+              <Home polls={polls} user={user} />
             </Route>
           </Switch>
         </Router>
-        <div style={{ width: "300px", margin: "auto"}}>
+        <div style={{ width: "300px", margin: "auto" }}>
           <MessageAlert message={message} messageVariant={messageVariant} />
         </div>
       </Container>

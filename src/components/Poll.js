@@ -16,9 +16,7 @@ import {
 const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
   const [formSelect, setFormSelect] = useState(0)
   const id = useParams().id
-  console.log(polls)
   const poll = polls.find(n => n.id === id)
-  console.log(poll)
   const options = Object.entries(poll.options)
   const optionsAndVotes = options.map(x => [x[1].option])
   options.map((x, i) => optionsAndVotes[i].push(x[1].votes))
@@ -26,7 +24,6 @@ const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) =
 
   const onFormChange = (event) => {
     setFormSelect(event.target.value)
-    console.log(poll)
   }
 
   const vote = (event) => {
@@ -47,25 +44,35 @@ const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) =
     }, 3000)
   }
 
+  const countVotes = () => {
+    let votes = 0
+    for(let i = 1; i < optionsAndVotes.length; i++) {
+      votes += optionsAndVotes[i][1]
+    }
+    return votes
+  }
+
   return (
     <>
       <h3>{poll.question}</h3>
+      <p>Added by {poll.user.username}</p>
       <Row className="justify-content-center">
-        <Chart
-          width={"300px"}
-          height={"300px"}
-          chartType="PieChart"
-          loader={<div>Loading Chart</div>}
-          data={optionsAndVotes}
-          options={{
-            title: "Votes",
-            is3D: true
-          }}
-          rootProps={{ "data-testid": "1" }}
-        />
+        {countVotes() > 0 ?
+          <Chart
+            width={"300px"}
+            height={"300px"}
+            chartType="PieChart"
+            loader={<div>Loading Chart</div>}
+            data={optionsAndVotes}
+            options={{
+              title: "Votes",
+              is3D: true
+            }}
+            rootProps={{ "data-testid": "1" }}
+          /> : <p style={{ width: "200px" }}><b>No votes yet</b></p>}
         <Form inline onSubmit={vote}>
           <Form.Label className="my-1 mr-2" htmlFor="inlineFormCustomSelectPref">
-        I'd like to vote for...:
+        I'd like to vote for:
           </Form.Label>
           <Form.Control
             onChange={onFormChange}

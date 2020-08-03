@@ -11,13 +11,10 @@ const Login = ( { loginService, setUsername, username, setPassword, password, se
       const user = await loginService.login({
         username, password,
       })
-      console.log(user)
 
       window.localStorage.setItem(
         "loggedVoteappUser", JSON.stringify(user)
       )
-
-      console.log(window.localStorage.getItem("loggedVoteappUser"))
 
       pollService.setToken(user.token)
       setUser(user)

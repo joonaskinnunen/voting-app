@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
-import { Button, Form, Row, Alert } from "react-bootstrap"
-import {
-  BrowserRouter as Router,
-  Redirect
-} from "react-router-dom"
+import { Button, Form, Row } from "react-bootstrap"
+import { Redirect } from "react-router-dom"
 
 const Signup = ( { signupService, setMessage, setMessagevariant } ) => {
   const [username, setUsername] = useState("")

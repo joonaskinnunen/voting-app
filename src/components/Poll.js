@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useParams } from "react-router-dom"
 import Chart from "react-google-charts"
 import { Button, Form, Row } from "react-bootstrap"
@@ -13,20 +13,17 @@ import {
   WhatsappIcon
 } from "react-share"
 
-const Poll = ({ polls, pollService, setPolls, setMessage, setMessagevariant, user }) => {
+const Poll = ({ polls, setPolls, pollService, setMessage, setMessagevariant, user }) => {
   const [formSelect, setFormSelect] = useState(0)
   const [newOption, setNewOption] = useState("")
 
-  useEffect(() => {
-    pollService
-      .getAll()
-      .then(initialPolls => {
-        setPolls(initialPolls)
-      })
-  }, [])
-
   const id = useParams().id
-  const poll = polls.find(n => n.id === id)
+  const poll = polls.find(n => n.id === id) ? polls.find(n => n.id === id) : {
+    question: "",
+    options: {
+    },
+    user: "5f20649238fe084778d799a6",
+  }
   const options = Object.entries(poll.options)
   const optionsAndVotes = options.map(x => [x[1].option])
   options.map((x, i) => optionsAndVotes[i].push(x[1].votes))

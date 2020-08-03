@@ -12,7 +12,7 @@ import Signup from "./components/Signup"
 import { Container } from "react-bootstrap"
 
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
@@ -35,7 +35,6 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       pollService.setToken(user.token)
-      console.log(user)
     }
   }, [])
 

@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react"
 import { Button, Form, Row } from "react-bootstrap"
+import { Redirect } from "react-router-dom"
 
 const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }) => {
-  const [values, setValues] = useState({ question: "", options: "", optionsObj: {}, allowCustomOption: false, privatePoll: false })
+  const [values, setValues] = useState({ question: "", options: "", optionsObj: {}, allowCustomOption: false, privatePoll: false, id: null })
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const formStyle = {
     marginBottom: "20px"
@@ -11,7 +13,6 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(values)
     if(values.question.length < 5) {
       setMessagevariant("danger")
       setMessage("Question length must be at least 5 characters long")
@@ -21,10 +22,11 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
     } else {
       const newObj = { question: values.question, options: values.optionsObj, allowCustomOption: values.allowCustomOption, privatePoll: values.privatePoll }
       pollService.create(newObj).then(response => {
-        setPolls(polls.concat(response.data))
+        setPolls(polls.concat(response))
         setMessagevariant("success")
         setMessage("A new poll added succesfully!")
-        setValues({ question: "", options: "", optionsObj: {}, allowCustomOption: false, privatePoll: false })
+        setValues({ ...values, id: response.id })
+        setIsSubmitted(true)
       }).catch(error => {
         console.log(error)
         setMessagevariant("danger")
@@ -49,6 +51,7 @@ const NewPoll = ({ polls, pollService, setPolls, setMessage, setMessagevariant }
 
   return (
     <>
+      {isSubmitted && <Redirect to={`/polls/${values.id}`} />}
       <h3>Add a new poll</h3>
       <Row className="justify-content-center">
         <Form onSubmit={handleSubmit} style={formStyle}>

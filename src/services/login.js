@@ -7,7 +7,7 @@ const login = async credentials => {
 }
 
 const logout = () => {
-  window.localStorage.clear()
+  window.localStorage.removeItem("loggedVoteappUser")
 }
 
 export default { login, logout }

@@ -39,16 +39,24 @@ const Poll = ({ polls, setPolls, pollService, setMessage, setMessagevariant, use
     if(formSelect !== "newOption") {
       newObj = { ...poll, options: { ...poll.options, [formSelect]: { ...poll.options[formSelect], votes: poll.options[formSelect].votes + 1 } } }
     }
-    pollService.update(id, newObj).then(response => {
-      setPolls(polls.map(poll => poll.id !== id ? poll : response))
-      setMessagevariant("success")
-      setMessage("Thanks for voting!")
-    })
-      .catch(error => {
-        console.log(error)
-        setMessagevariant("danger")
-        setMessage("Error. Try again later.")
+    if(localStorage.getItem(id)) {
+      setMessagevariant("danger")
+      setMessage("Error: You can only vote once a poll.")
+    } else {
+      pollService.update(id, newObj).then(response => {
+        setPolls(polls.map(poll => poll.id !== id ? poll : response))
+        setMessagevariant("success")
+        setMessage("Thanks for voting!")
+        window.localStorage.setItem(
+          id, id
+        )
       })
+        .catch(error => {
+          console.log(error)
+          setMessagevariant("danger")
+          setMessage("Error. Try again later.")
+        })
+    }
     setTimeout(() => {
       setMessage("")
     }, 3000)

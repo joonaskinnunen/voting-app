@@ -73,7 +73,6 @@ const Poll = ({ polls, setPolls, pollService, setMessage, setMessagevariant, use
   return (
     <>
       <h3>{poll.question}</h3>
-      <p>Added by {poll.user.username}</p>
       <Row className="justify-content-center">
         {countVotes() > 0 ?
           <Chart

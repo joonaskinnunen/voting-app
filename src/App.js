@@ -47,6 +47,10 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    document.title = "Voting App"
+  }, [])
+
   const handleLogout = () => {
     loginService.logout()
     setUser(null)

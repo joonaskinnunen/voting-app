@@ -7,6 +7,7 @@ import Poll from "./components/Poll"
 import NewPoll from "./components/NewPoll"
 import Home from "./components/Home"
 import Header from "./components/Header"
+import Footer from "./components/Footer"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
 import { Container } from "react-bootstrap"
@@ -85,6 +86,7 @@ const App = () => {
         <div style={{ width: "300px", margin: "auto" }}>
           <MessageAlert message={message} messageVariant={messageVariant} />
         </div>
+        <Footer />
       </Container>
     </div>
   )

@@ -77,8 +77,8 @@ const Poll = ({ polls, setPolls, pollService, setMessage, setMessagevariant, use
       <Row className="justify-content-center">
         {countVotes() > 0 ?
           <Chart
-            width={"300px"}
-            height={"300px"}
+            width={"400px"}
+            height={"400px"}
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={optionsAndVotes}

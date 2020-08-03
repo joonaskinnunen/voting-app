@@ -28,7 +28,7 @@ const Home = ({ polls, user }) => {
       <>
         <ListGroup>
           {polls.map(poll => !poll.privatePoll &&
-            <ListGroup.Item key={poll.id}><Link to={`/polls/${poll.id}`}>{poll.question}</Link></ListGroup.Item>
+            <Link to={`/polls/${poll.id}`}><ListGroup.Item action variant="light" key={poll.id}>{poll.question}</ListGroup.Item></Link>
           )}
         </ListGroup>
       </>

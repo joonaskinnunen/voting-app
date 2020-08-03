@@ -4,7 +4,7 @@
   text-align: center;
 }
 
-a {
+a, .list-group-item-light {
   color: #4cdbc4!important
 }
 
@@ -37,4 +37,11 @@ h1, h2, h3 {
 
 .form-group {
   width: 300px;
+}
+
+.footer {
+  text-align: left;
+  background-color: grey;
+  color: white;
+  padding: 10px 20px 10px 20px;
 }
